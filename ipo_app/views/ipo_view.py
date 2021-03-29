@@ -3,18 +3,16 @@ from flask import Blueprint, request, redirect, url_for, Response
 #from twit_app.services.tweepy_api import get_user, get_tweets
 #from twit_app.models import tweet_model
 #from twit_app.models.user_model import User
-#from twit_app.models.tweet_model import Tweet
+from ipo_app.models.company_model import Company
 from ipo_app import db
+from ipo_app.services.data_reader_api import get_return
 
 bp = Blueprint('ipo', __name__)
 
 
-@bp.route('/user', methods=['POST'])
-def add_user():
+@bp.route('/company', methods=['POST'])
+def search_company():
     """
-    add_user 함수는 JSON 형식으로 전달되는 폼 데이터로 유저를 트위터에서 조회한 뒤에
-    해당 유저와 해당 유저의 트윗들을 벡터화한 값을 데이터베이스에 저장합니다.
-
     요구사항:
       - HTTP Method: `POST`
       - Endpoint: `api/user`
@@ -41,18 +39,18 @@ def add_user():
         - 리턴값: main_route.py 에 있는 user_index 함수로 리다이렉트 합니다.
         - HTTP 상태코드: `200`
     """
-    
-    request_name = request.form.get('username')#request.form["username"]:존재확실 #request.form.get('username') #존재하지 않을 수도 있을 때
+   
+    request_name = request.form['companyname']#request.form["username"]:존재확실 #request.form.get('username') #존재하지 않을 수도 있을 때
 
     if not request_name:
-          return "Needs username", 400
+          return "기업명을 입력해주세요", 400
 
-    
     try:
-      twit_username = get_user(screen_name=request_name).screen_name
+      
+      company_name = get_return(name=request_name)
     except:
     
-          return redirect(url_for('main.user_index'), code=400)  #이부분 문제 tweepy.error.TweepError: [{'code': 50, 'message': 'User not found.'}]
+          return redirect(url_for('main.company'), code=400)  #이부분 문제 tweepy.error.TweepError: [{'code': 50, 'message': 'User not found.'}]
    
     tweepy_object = get_tweets(screen_name=twit_username)
     text_list = []
@@ -95,8 +93,17 @@ def delete_company(company_id=None):
         - 리턴값: main_route.py 에 있는 user_index 함수로 리다이렉트 합니다.
         - HTTP 상태코드: `200`
     """
-    #user_id = request.args.get('user_id') #ㅜㅜ엔드포인트로 주어지는 값은 그냥 쓰는 것
-    
+     #ㅜㅜ엔드포인트로 주어지는 값은 그냥 쓰는 것
+    '''
+    task_to_delete = Company.query.get_or_404(company_id)
+    try: 
+      db.session.delete(task_to_delete)
+      db.session.commit()
+      return redirect('/company')
+
+    except:
+      return "삭제하는 데 문제가 생겼습니다."
+    '''
     if not company_id:
           return Response(status=400) #'', 400 이렇게 써도 됨
 

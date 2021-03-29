@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>1년 후 수익률 예측기</title>
+</head>
+<body>
+	<nav class="navbar navbar-light" style="border-bottom: 1px solid #9ad5f3;">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Navbar brand -->
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <a class="nav-link" aria-current="page" href="/">HOME</a>
+                    <a class="nav-link" aria-current="page" href="/intro">사이트 소개</a>
+        
+                    <a class="nav-link" href="/company">기업조회</a>
+        
+                    <a class="nav-link" href="/predict">예측기</a>
+        
+                </ul>
+            </div>
+        </div>
+    </nav>
+	<form method="POST" action="/predict">
+		<div class="form-group">
+		
+		<label>예측하고 싶은 기업 검색</label>
+		<input name="companyname" style="margin-bottom:10px" class="form-control" type="text" />
+		<input type="submit" class="btn btn-primary" value="Predict" />
+		
+		</div>
+	  </form>
+	  
+	  {% for prediction in  predictions %}
+	  <p> '{{prediction.name}}' 의 1년 후 수익률은 '{{prediction.returns}}'% 입니다.</p>
+
+	  <table>
+		  <th>기업명</th>
+		  <th>1년후 수익률이 평균이상인지 여부</th>
+			<td>{{prediction.name}}</td>
+			<td>{{prediction.returns}}</td>
+	  </table>
+	  {% endfor %}
+</body>
+</html>
+
+
+
+

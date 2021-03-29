@@ -1,29 +1,113 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, url_for
 #from twit_app.utils import main_funcs
 #from twit_app.services.tweepy_api import get_user
 from ipo_app import db
+from ipo_app.services.data_reader_api import get_return
+from ipo_app.models.company_model import Company  #임포트를 안해서 undetected되었음
+from ipo_app.models.user_model import User
+from ipo_app.models.stock_model import Stock
+import os
+
+        #path = url_for('services', filename='test_data.xlsx')
 
 bp = Blueprint('main', __name__)
 
-@bp.route('/')
+import pandas as pd
+#df = pd.read_excel(r'services/test_data.xlsx')
+#print(df.head())
+#from ipo_app import app
+#filename = os.path.join(app.instance_path, 'services', 'test_data.xlsx')
+#df = pd.read_excel(path, converters={'종목코드': str}) 
+
+
+@bp.route('/', methods=['POST', 'GET'])
 def index():
+    #if request.method == 'POST':
+     #   re_company = request.form['content']
+      #  comp_data = Company(companyname = re_company)
+
+     #   try:
+      #      db.session.add(comp_data)
+       #     db.session.commit()
+        #    return redirect('company.html') #원래 redirect('/') 였음
+     #   except:
+      #      return "오류가 있었습니다."
     return render_template('index.html')
 
 
-@bp.route('/company')
+@bp.route('/company', methods=['GET','POST'])
 def read_data():
     """
     데이터 조회하는 페이지
     """
-    #ipo_company = Company.query.all()
-    #company_list = []
-    #company_data = {}
-    #for company in ipo_company:
-     #   company_data["name"] = company["name"]
-      #  company_list.append(company_data)
-    #return render_template('company.html', company_list=company_list)
-    return render_template('company.html')
+    if request.method == "GET":
+        return render_template("company.html")
+  
+    compname = request.form['existing_company']
+    if not compname:
+        return "회사명을 검색해주세요."
+    query_comp = Company.query.filter(companyname=compname).first()
+   
+    if not query_comp:
+        return "2009년 1월 1일 ~ 2020년 3월 1일 사이의 데이터를 검색해주세요."
 
+    #db.session.add(users)
+    if request.method == 'POST':
+            
+        comp_list = []
+        
+        for company in query_comp:
+            com = {"회사명" : company['companyname'], "종목코드": company["stockcode"], "상장일": company["ipodate"], "공모가": company["price"], "1년후종가": company["year_later"]}
+            comp_list.append(com)
+        return render_template('company.html', comp_list=comp_list)    
+    
+
+    
+    
+@bp.route('/intro')
+def intro_page():
+    return render_template('intro.html')
+
+
+@bp.route('/predict', methods=['GET','POST'])
+def prediction_data():
+    if request.method == "GET":
+        return render_template('predict.html'), 200
+    if request.method == "POST":
+        try:
+            post_predict = request.form['companyname']
+            print(post_predict) #post_predict에 값 제대로 들어감
+            
+            from ipo_app import app
+            #path = url_for('services', filename='test_data.xlsx')
+            filename = os.path.join(app.instance_path, 'services', 'test_data.xlsx')
+            df = pd.read_excel(path, converters={'종목코드': str}) 
+            print(df.head())
+            data = df[df['회사명']== post_predict]
+            #sk_bio = raw_data[raw_data['회사명'] == 'SK바이오사이언스']
+            data['상장일'] = data['상장일'].replace('-','').astype(int) 
+
+           #predict
+            from sklearn.externals import joblib
+            model = os.path.join(app.instance_path, 'utils', 'lgb.pkl')
+            price_predict = model.predict(data)
+            predictions = [] 
+            predict_list = User.query.all()
+            for p in predict_list:  
+                prediction = {"name": name, "returns": 100 * price_predict}
+            predictions.append(prediction)
+            query_object = User(prediction['name'], prediction['returns'])
+            db.session.add(query_object)
+            db.session.commit()
+            return render_template('predict.html', predictions = predictions), 200
+        except:
+           return "2020년 3월 1일 ~ 2021년 3월 26일 사이의 데이터를 검색해주세요"
+        
+               
+            
+       
+           # return render_template('predict.html', company_name = company_name), 200
+        
 '''
 @bp.route('/compare', methods=["GET", "POST"])
 def compare_index():
@@ -32,7 +116,7 @@ def compare_index():
     형태로 넘겨주셔야 합니다.
      -  {
             "id" : "유저의 아이디 값이 담긴 숫자",
-            "username" : "유저의 유저이름 (username) 이 담긴 문자열"
+            "companyname" : "유저의 유저이름 (username) 이 담긴 문자열"
         }
 
     prediction 은 다음과 같은 딕셔너리 형태로 넘겨주셔야 합니다:

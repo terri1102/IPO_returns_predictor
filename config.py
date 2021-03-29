@@ -6,8 +6,8 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgres://kvxwhfps:UOsl6O51bAazg_amBZsp_-dBPyUX9_5J@arjuna.db.elephantsql.com:5432/kvxwhfps'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://kvxwhfps:UOsl6O51bAazg_amBZsp_-dBPyUX9_5J@arjuna.db.elephantsql.com:5432/kvxwhfps' 
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgres://kvxwhfps:UOsl6O51bAazg_amBZsp_-dBPyUX9_5J@arjuna.db.elephantsql.com:5432/kvxwhfps'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://kvxwhfps:UOsl6O51bAazg_amBZsp_-dBPyUX9_5J@arjuna.db.elephantsql.com:5432/kvxwhfps' 
