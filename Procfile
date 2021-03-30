@@ -1,1 +1,1 @@
-web: gunicorn --workers=2 'flask_app:create_app()' --bind 0.0.0.0:${PORT}
+web: gunicorn --workers=2 'ipo_app:create_app()' --bind 0.0.0.0:${PORT}
