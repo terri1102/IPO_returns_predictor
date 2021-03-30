@@ -46,7 +46,7 @@ def search_company():
           return "기업명을 입력해주세요", 400
 
     try:
-      
+
       company_name = get_return(name=request_name)
     except:
     
@@ -72,7 +72,7 @@ def search_company():
     return redirect(url_for('main.user_index', msg_code=0), code=200)
 
 
-@bp.route('/company/')
+
 @bp.route('/company/<int:company_id>')
 def delete_company(company_id=None):
     """

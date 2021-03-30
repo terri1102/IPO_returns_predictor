@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/reset.css">
+    <link rel="stylesheet" type="text/css" href="static/company.css">
+
+</head>
+<body>
+    <nav class="navbar navbar-light" style="border-bottom: 1px solid #9ad5f3;">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Navbar brand -->
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <a class="nav-link" aria-current="page" href="/">HOME</a>
+                    <a class="nav-link" aria-current="page" href="/intro">사이트 소개</a>
+        
+                    <a class="nav-link" href="/company">기업조회</a>
+        
+                    <a class="nav-link" href="/predict">예측기</a>
+        
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section id="main_contents">
+        <div class="wrapper">
+            <title>업데이트</title>
+            <h3 class="main_title">변경할 내용을 입력하세요</h3>
+            <h3 class="sub_title">아직 증권신고서가 제출되지 않은 기업들은 조회되지 않습니다.</h3>
+           
+            <div class="search_bar"></div>
+            <div class="button"></div>
+            <div class="github"></div>
+            <form action="/update/{{company_update.id}}" method="GET">
+                <input type="text" value="수정할 회사명">
+                <input type="text" name="company_id" id="company_id" value="{{company_update.id}}">
+                
+         
+            </form>
+ 
+        <div class="content">
+          
+            <div class="form">
+                <form action='/update/{{company_update.content}}' method="POST">
+                    <input type="text" name="content" id="content" value="{{company_update.content}}">
+                    <input type="submit" value="업데이트">
+                </form>
+            </div>
+        
+        </div>
+     
+  
+        </tr>
+    </table>
+
+        </div>
+    </section>
+    
+</body>
+</html>

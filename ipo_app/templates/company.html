@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/reset.css">
+    <link rel="stylesheet" type="text/css" href="static/company.css">
 
 </head>
 <body>
@@ -29,39 +31,69 @@
             <title>기업 조회하기</title>
             <h3 class="main_title">IPO 데이터 조회하기</h3>
             <h3 class="sub_title">아직 증권신고서가 제출되지 않은 기업들은 조회되지 않습니다.</h3>
+           
             <div class="search_bar"></div>
             <div class="button"></div>
             <div class="github"></div>
             <form action="/company" method="POST">
                 <input type="text" name="existing_company" id="existing_company">
                 <input type="submit" value="검색">
-            
+         
             </form>
+
+
+        <div class="sub_title2"></div> 
+    
+        <style>
+            table {
+              width: 110%;
+              margin-left: auto;
+              margin-right: auto;
+              border-top: 1px solid #444444;
+              border-collapse: collapse;
+            }
+            th, td {
+              border-bottom: 1px solid #444444;
+              padding: 10px;
+            }
+            table {
+                background-color: #0a2133;
+              }
+          
+    </style>  
     <table>
         <tr>
-            <th>기업명</th>
+            <th>#</th>
+            <th>회사명</th>
             <th>종목코드</th>
             <th>상장일</th>
-            <th>공모가</th>
-            <th>1년 후 종가</th>
-            <th>삭제</th>
-           
+            <th>공모가(원)</th>
+            <th>공모금액(천원)</th>
+            <th>최초상장주식수(주)</th>
+            <th>1년후종가</th>
+            <th>수익률</th>
+            <th>편집</th>
         </tr>
-        <tr>
+        
             {% for company in comp_list %}
-            <td>{{company.companyname}}</td>
-            <td>{{company.stockcode}}</td>
-            <td>{{company.ipodate}}</td>
-            <td>{{company.price}}</td>
-            <td>{{company.year_later}}</td>
-            
-            <td>
-                <a href="">Delete</a>
-                <br>
-                <a href="">Update</a>
-            </td>
+            <tr>
+                <td>{{company.id}}</td>
+                <td>{{company.companyname}}</td>
+                <td>{{company.stockcode}}</td>
+                <td>{{company.ipodate}}</td>
+                <td>{{company.price}}</td>
+                <td>{{company.total}}</td>
+                <td>{{company.stock_amount}}</td>
+                <td>{{company.year_later_price}}</td>
+                <td>{{company.year_later_return}}</td>
+        
+                <td>
+                    <a href="/delete/{{ company.id }}">Delete</a>
+                    <br>
+                    <a href="/update/{{ company.id }}">Update</a>
+                </td>
             {% endfor %}
-        </tr>
+            </tr>
     </table>
 
         </div>

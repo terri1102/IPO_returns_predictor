@@ -70,9 +70,6 @@ body {
 
 }
 
-
-
-
 #main_contents {
     display: flex;
     justify-content: center;
@@ -108,36 +105,47 @@ body {
     font-size: 20px;
     font-weight: bold;
     color: #329dab;
+    padding-bottom: 15px;
 }
 
 .intro {
     text-align: center;
+    padding-bottom: 15px;
+}
+
+.search_bar {
     padding-bottom: 40px;
+    height: 20px;
+    width: 60px;
 }
 
-.intro h1 {
-    font-size: 30px;
-    padding-bottom: 30px;
+.input {
+    font-size: 20px;
+    width: 325px;
+    padding: 10px;
+    border: 0px;
 }
 
-.type {
-    font-size: 25px;
-    line-height: 3em;
-    height: 3em;
-    overflow: hidden;
+form
+{
+    height: 26px;
 }
-
-.search {
-        display:inline-block;
-   }
 
 .button {
-    color:blanchedalmond;
-    height: 20px;
-    padding-top: 10px;
+    color:bisque;
+    font-size: 16px;
+    width: 50px;
+    height: 100%;
+    cursor: pointer;
 
 }
 
-.button-link {
-    color:blanchedalmond;
+.sub_title2 {
+    padding-top: 20px;
+}
+
+.table {
+    padding-top: 10px;
+    text-align: center;
+   
 }

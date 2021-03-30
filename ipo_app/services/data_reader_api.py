@@ -4,22 +4,6 @@ import os
 
 #import csv
 import pandas as pd
-'''
-with open('ipo_final.csv', 'r', encoding='UTF8') as f:
-    reader = csv.reader(f) #reader 객체 상태: 이때 데이터는 보이지 않음 #아..converters 못쓰네
-    next(reader, None)
-    row_list = []          #왠만하면 이렇게 리스트에 row를 넣는 식으로 하기!
-    for row in reader:
-        row_list.append(row)
-    row_list = row_list[1:]
-'''
-
-#filename = os.path.join(app.instance_path, 'services', 'final_dataset.xlsx')
-#df = pd.read_excel(filename, converters={'종목코드': str})     
-
-
-#name = '메디톡스'
-#print('{}의 1년 후 수익률은 {}% 입니다.'.format(name, 100 *get_return(name)))
 
 
 def dates(name):

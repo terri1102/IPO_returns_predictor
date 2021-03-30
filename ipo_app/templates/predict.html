@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="static/reset.css">
+    <link rel="stylesheet" type="text/css" href="static/predict.css">
 	<title>1년 후 수익률 예측기</title>
 </head>
 <body>
@@ -24,26 +26,45 @@
             </div>
         </div>
     </nav>
+
+	<section id="main_contents">
 	<form method="POST" action="/predict">
 		<div class="form-group">
+		<h3 class="main_title">예측하고 싶은 기업 검색</h3>
 		
-		<label>예측하고 싶은 기업 검색</label>
 		<input name="companyname" style="margin-bottom:10px" class="form-control" type="text" />
-		<input type="submit" class="btn btn-primary" value="Predict" />
+		<input type="submit" class="btn btn-primary" value="검색" />
 		
 		</div>
 	  </form>
-	  
+	</section>
 	  {% for prediction in  predictions %}
-	  <p> '{{prediction.name}}' 의 1년 후 수익률은 '{{prediction.returns}}'% 입니다.</p>
-
-	  <table>
-		  <th>기업명</th>
-		  <th>1년후 수익률이 평균이상인지 여부</th>
-			<td>{{prediction.name}}</td>
-			<td>{{prediction.returns}}</td>
+	  
+	  <p> '{{prediction.companyname}}' 의 1년 후 수익률 '{{prediction.year_later}}'일 확률이 높습니다!</p>
+	<p>지난 10년 간의 데이터를 분석한 결과 기업 공개 1년 후의 수익률의 평균은 16.5%입니다</p>
+	<p>{{prediction.companyname}}의 경우</p> {% endfor %}
+	{% for indi in extra_info %}
+	<p>상장할 당시 공모가는 {{indi.price}}(원), 공모금액은 {{indi.total}}(천원)으로</p>  
+	<p>모델의 분석 결과 평균 이상의 수익률을 기록할 것이라고 예측되었습니다.</p>
+	<p>본 모델의 정확도는 0.64이기 때문에, 결과는 재미로 보시고 투자는 신중하게 결정해주세요 🧚</p> {% endfor %}
+	
+	
+	<table>
+        <tr>
+            <th>#</th>
+            <th>회사명</th>
+            <th>1년후수익률</th>
+          
+        </tr>
+        
+            {% for prediction in predictions %}
+            <tr>
+                <td>{{prediction.id}}</td>
+                <td>{{prediction.companyname}}</td>
+                <td>{{prediction.year_later}}</td>
+				{% endfor %}
 	  </table>
-	  {% endfor %}
+	  
 </body>
 </html>
 
