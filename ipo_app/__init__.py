@@ -2,6 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import config
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 db = SQLAlchemy()
@@ -29,4 +32,6 @@ def create_app(config=None):
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000")
+    app.run(host="0.0.0.0", port=port)
+    
