@@ -10,4 +10,4 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'os.getenv('DATABASE_URL') 
+    SQLALCHEMY_DATABASE_URI = 'postgresql://kvxwhfps:UOsl6O51bAazg_amBZsp_-dBPyUX9_5J@arjuna.db.elephantsql.com:5432/kvxwhfps'
