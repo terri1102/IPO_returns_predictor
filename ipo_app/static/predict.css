@@ -139,9 +139,15 @@ form
     cursor: pointer;
 
 }
-
+.sub_title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #329dab;
+    padding-bottom: 15px;
+}
 .sub_title2 {
     padding-top: 20px;
+    padding-bottom: 80px;
 }
 
 .table {

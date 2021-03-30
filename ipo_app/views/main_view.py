@@ -32,7 +32,8 @@ def read_data():
     데이터 조회하는 페이지
     """
     if request.method == "GET":
-        return render_template("company.html")
+        comp_list = Company.query.all()
+        return render_template("company.html",comp_list=comp_list)
 
     if request.method == "POST":
         compname = request.form['existing_company']
@@ -41,11 +42,10 @@ def read_data():
     #query_comp = Company.query.filter(companyname=compname).first()
         try:
             comp_in_range = companies[companies['회사명'] == compname]
-        except:
-            return "2009년 1월 1일 ~ 2020년 3월 1일 사이의 데이터를 검색해주세요."
-        else:
+      
+        
             ipo_date = str(pd.to_datetime(comp_in_range['상장일'].values[0]).date())
-            print(ipo_date)
+           
             #key는 영어로!!!
             com = {"companyname" : comp_in_range['회사명'].values[0], "stockcode": comp_in_range["종목코드"].values[0],\
                 "ipodate": ipo_date, "price": comp_in_range["공모가(원)"].values[0],\
@@ -60,16 +60,19 @@ def read_data():
                     year_later_price=comp_in_range['1년후종가'].values[0].astype(float), year_later_return=comp_in_range['수익률'].values[0])
             
        
-        new_data = Company.query.filter_by(companyname=com['companyname']).first()
-        if not new_data: 
-            try:
-                db.session.add(comp_search)
-                db.session.commit()
-                comp_list = Company.query.all()
-                return render_template('company.html', comp_list=comp_list)   
-            except: 
-                return "데이터베이스 반영에 문제가 생겼습니다."
-         
+            new_data = Company.query.filter_by(companyname=com['companyname']).first()
+            if new_data:
+                return "데이터가 이미 존재합니다."
+            if not new_data: 
+                try:
+                    db.session.add(comp_search)
+                    db.session.commit()
+                    comp_list = Company.query.all()
+                    return render_template('company.html', comp_list=comp_list)   
+                except: 
+                    return "데이터베이스 반영에 문제가 생겼습니다."
+        except:
+            return "2009년 1월 1일 ~ 2020년 3월 1일 사이의 데이터를 검색해주세요." 
     
 @bp.route('/intro')
 def intro_page():
@@ -81,13 +84,15 @@ df = pd.read_excel('ipo_app/views/encoded_test.xlsx', converters={'종목코드'
 import joblib
 #model = joblib.load('lgb.pkl')
 model = joblib.load('ipo_app/views/lgb.pkl')  
-predictions = [] 
+#predictions = [] 
+extra_infos = []
 from datetime import date
 #ipo_app/services/test_data.xlsx
 @bp.route('/predict', methods=['GET','POST'])
 def prediction_data():
     if request.method == "GET":
-        return render_template('predict.html'), 200
+        predictions = Users.query.all()
+        return render_template('predict.html',predictions = predictions), 200
     if request.method == "POST":
         
         post_predict = request.form['companyname']
@@ -98,17 +103,17 @@ def prediction_data():
         #predict   
         price_predict = model.predict(data)
         #print(price_predict)
-        if price_predict[0] == 0:
+        if price_predict[0] < 1:
             verdict = "평균이하"
-        if price_predict[0] == 1:
+        if price_predict[0] > 0:
             verdict = "평균이상"
         prediction = {"name": post_predict, "returns": verdict}
-        
+        print(prediction)
         query_object = Users(companyname=prediction['name'], prediction_year=verdict)
         
         db_query = Users.query.filter_by(companyname=prediction['name']).first()
-        extra_info = {"price": data['공모가(원)'].values[0], "total": data['공모금액(천원)'].values[0]}
-        
+        extra_info = {"name": data['회사명'].values[0],"price": data['공모가(원)'].values[0], "total": data['공모금액(천원)'].values[0], "verdict": prediction['returns']}
+        extra_infos.append(extra_info)
         if db_query:
             return "데이터가 이미 존재합니다."
         if not db_query:
@@ -116,7 +121,7 @@ def prediction_data():
             db.session.commit()
             predictions = Users.query.all()
             
-            return render_template('predict.html', predictions = predictions, extra_info=extra_info), 200
+            return render_template('predict.html', predictions = predictions), 200
 
         if not data:
             return "2020년 3월 1일 ~ 2021년 3월 26일 사이의 데이터를 검색해주세요"
@@ -164,28 +169,16 @@ def delete_company(id=None):
 
     return render_template('company.html', comp_list=comp_list)
 
-"""
-    if not company_id:
-          return Response(status=400) #'', 400 이렇게 써도 됨
 
-    
-    db_id = Company.query.filter_by(id=company_id).first()
-    if not db_id:
-          return Response(status=404) #'', 404
-    
-    
-    db.session.delete(db_id)
-    db.session.commit()
-    return redirect(url_for('main.company_index'))
-"""
 @bp.route('/update/<int:id>', methods = ['GET',"POST"])
 def update(id):
-    company_update = Company.query.get_or_404(id)
+    company_update = Company.query.filter_by(id=id).first()
     if request.method == 'POST':
         company_update.year_later_price = request.form['content']
         try:
+            db.session.add(company_update)
             db.session.commit()
-            return redirect('/company')
+            return redirect(url_for('main.read_data'))
         except:
             return '업데이트를 하는 데 문제가 발생했습니다.'
     else:

@@ -28,43 +28,66 @@
     </nav>
 
 	<section id="main_contents">
+		<div class="wrapper">
 	<form method="POST" action="/predict">
 		<div class="form-group">
 		<h3 class="main_title">예측하고 싶은 기업 검색</h3>
-		
+		<div class="search_bar"></div>
+		<div class="button"></div>
+		<form action="/predict" method="POST">
+			<input type="text" name="companyname" id="companyname">
+			<input type="submit" class="btn btn-primary" value="검색">
+<!--	 </form>
 		<input name="companyname" style="margin-bottom:10px" class="form-control" type="text" />
-		<input type="submit" class="btn btn-primary" value="검색" />
+		<input type="submit" class="btn btn-primary" value="검색" /> */-->
 		
 		</div>
-	  </form>
+	 
+	  	
+	  <div class="sub_title2"></div> 
+    
+	  <style>
+		  table {
+			width: 110%;
+			margin-left: auto;
+			margin-right: auto;
+			border-top: 1px solid #444444;
+			border-collapse: collapse;
+		  }
+		  th, td {
+			border-bottom: 1px solid #444444;
+			padding: 10px;
+		  }
+		  table {
+			  background-color: #0a2133;
+			}
+		
+  </style>  
+  <table>
+	  <tr>
+		  <th>#</th>
+		  <th>회사명</th>
+		  <th>평가</th>
+		  <th>삭제</th>
+		  
+	  </tr>
+	  {% for prediction in predictions %}
+	<tr>
+		
+		  <td>{{prediction.id}}</td>
+		  <td>{{prediction.companyname}}</td>	
+		  <td>{{prediction.companyname}}의 경우 {{prediction.prediction_year}}의 수익률을 기록할 것이라고 예측되었습니다.
+			본 모델의 정확도는 0.64이기 때문에, 결과는 재미로 보시고 투자는 신중하게 결정해주세요 🧚</td>
+		  <td>
+				<a href="/delete/{{ prediction.id }}">Delete</a></td>
+	</tr>
+	{% endfor %}
+		  </tr>
+  		</table>
+
+	 
+	</div>
 	</section>
-	  {% for prediction in  predictions %}
-	  
-	  <p> '{{prediction.companyname}}' 의 1년 후 수익률 '{{prediction.year_later}}'일 확률이 높습니다!</p>
-	<p>지난 10년 간의 데이터를 분석한 결과 기업 공개 1년 후의 수익률의 평균은 16.5%입니다</p>
-	<p>{{prediction.companyname}}의 경우</p> {% endfor %}
-	{% for indi in extra_info %}
-	<p>상장할 당시 공모가는 {{indi.price}}(원), 공모금액은 {{indi.total}}(천원)으로</p>  
-	<p>모델의 분석 결과 평균 이상의 수익률을 기록할 것이라고 예측되었습니다.</p>
-	<p>본 모델의 정확도는 0.64이기 때문에, 결과는 재미로 보시고 투자는 신중하게 결정해주세요 🧚</p> {% endfor %}
-	
-	
-	<table>
-        <tr>
-            <th>#</th>
-            <th>회사명</th>
-            <th>1년후수익률</th>
-          
-        </tr>
-        
-            {% for prediction in predictions %}
-            <tr>
-                <td>{{prediction.id}}</td>
-                <td>{{prediction.companyname}}</td>
-                <td>{{prediction.year_later}}</td>
-				{% endfor %}
-	  </table>
-	  
 </body>
 </html>
 

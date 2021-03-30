@@ -35,9 +35,9 @@
             <div class="search_bar"></div>
             <div class="button"></div>
             <div class="github"></div>
-            <form action="/update/{{company_update.id}}" method="GET">
+            <form action="/update/{{company_update.companyname}}" method="GET">
                 <input type="text" value="수정할 회사명">
-                <input type="text" name="company_id" id="company_id" value="{{company_update.id}}">
+                <input type="text" name="company_name" id="company_name" value="{{company_update.companyname}}">
                 
          
             </form>
@@ -45,9 +45,10 @@
         <div class="content">
           
             <div class="form">
-                <form action='/update/{{company_update.content}}' method="POST">
+                <form action='url_for("main.update(id)")' method="POST">
                     <input type="text" name="content" id="content" value="{{company_update.content}}">
                     <input type="submit" value="업데이트">
+                
                 </form>
             </div>
         
