@@ -1,3 +1,5 @@
+https://img.shields.io/static/v1?label=<LABEL>&message=<MESSAGE>&color=<COLOR>
+
 ## 프로젝트 소개
 기존 상장된 기업들의 상장 후 1년 수익률을 조회하고, 새로 상장되는 기업의 1년 후 수익률을 예측하는 사이트입니다.
 
