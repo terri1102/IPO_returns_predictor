@@ -23,7 +23,7 @@ KIND https://kind.krx.co.kr/main.do?method=loadInitPage&scrnmode=1
 네이버 금융https://finance.naver.com
 
 ## 모델
-lightgbm을 이용해서 평균 수익률 이상/이하를 예측하는 이진 분류 모델입니다. 
+lightgbm을 이용해서 평균 수익률 이상/이하를 예측하는 이진 분류 모델입니다. 모델은 ipynb 파일을 참고해주세요.
 
 ## 스키마
 
