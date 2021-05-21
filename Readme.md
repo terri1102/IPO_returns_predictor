@@ -4,14 +4,8 @@
 
 
 ![Generic badge](https://img.shields.io/badge/python-3.8.8-brightgreen)
-
-
 ![Generic badge](https://img.shields.io/badge/%09SQLAlchemy-1.3.23-yellowgreen)
-
-
 ![Generic badge](https://img.shields.io/badge/Flask-1.1.2-red)
-
-
 ![Generic badge](https://img.shields.io/badge/scikit--learn-0.24.1-blue)
 
 ## 사이트 주소
