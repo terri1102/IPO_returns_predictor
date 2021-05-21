@@ -1,5 +1,4 @@
-![image](https://user-images.githubusercontent.com/73813367/119087439-1a7dec00-ba42-11eb-9c8d-501951fb196c.png){:.aligncenter}
-
+![image](https://user-images.githubusercontent.com/73813367/119088206-40f05700-ba43-11eb-9d46-2bf95b63fa83.png)<p align="center"><img src="image_src"></p>
 ---
 
 ![Generic badge](https://img.shields.io/badge/python-3.8.8-brightgreen)
