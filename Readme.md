@@ -6,9 +6,7 @@
 ![Generic badge](https://img.shields.io/badge/Flask-1.1.2-red)
 ![Generic badge](https://img.shields.io/badge/scikit--learn-0.24.1-blue) 
 
-## 사이트 주소
 
-[https://my-ipo-predictor.herokuapp.com](https://my-ipo-predictor.herokuapp.com/)
 
 ## 프로젝트 소개
 기존 상장된 기업들의 상장 후 1년 수익률을 조회하고, 새로 상장되는 기업의 1년 후 수익률을 예측하는 사이트입니다.
